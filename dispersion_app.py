@@ -50,19 +50,12 @@ if st.button("Calcular"):
             desviacion = math.sqrt(float(varianza))
             rango = max(df['xi']) - min(df['xi'])
 
-            # Agregar fila de totales
-            df_totales = pd.DataFrame({
-                'xi': [''],
-                'fi': [''],
-                'fi*xi': [''],
-                'xi - Media': [''],
-                '(xi - Media)^2': [''],
-                '(xi - Media)^2 * fi': [suma_varianza]  # Total solo en esta columna
-            })
+            # Agregar fila de "Total" solo para la última columna
+            fila_totales = {col: '' for col in df.columns}
+            fila_totales['(xi - Media)^2 * fi'] = f"Total: {suma_varianza}"
+            df_final = pd.concat([df.astype(str), pd.DataFrame([fila_totales])], ignore_index=True)
 
-            df_final = pd.concat([df.astype(str), df_totales], ignore_index=True)
-
-            # Mostrar tabla con fracciones y totales
+            # Mostrar tabla con fracciones y totales alineados
             st.subheader("Tabla de análisis:")
             st.dataframe(df_final)
 
@@ -74,3 +67,4 @@ if st.button("Calcular"):
 
     except Exception as e:
         st.error(f"Error: {e}")
+
