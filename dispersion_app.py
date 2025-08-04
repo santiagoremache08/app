@@ -1,10 +1,9 @@
-
 import streamlit as st
 import pandas as pd
-import math
 from fractions import Fraction
+import math
 
-st.title("Análisis de Dispersión de Datos")
+st.title("Análisis de Dispersión de Datos (en Fracciones)")
 
 st.write("Ingresa hasta 5 pares de datos `xi` y `fi`")
 
@@ -33,26 +32,34 @@ if st.button("Calcular"):
         if not datos:
             st.warning("Por favor ingresa al menos un par de valores xi y fi.")
         else:
+            # Crear DataFrame
             df = pd.DataFrame(datos, columns=['xi', 'fi'])
             df['fi*xi'] = df['xi'] * df['fi']
             suma_fi = sum(df['fi'])
             suma_fixi = sum(df['fi*xi'])
-            media = suma_fixi / suma_fi
+            media = suma_fixi / suma_fi  # Media como fracción
+
+            # Calcular columnas derivadas
             df['xi - Media'] = df['xi'] - media
-            df['(xi - Media)^2'] = df['xi - Media'] ** 2
+            df['(xi - Media)^2'] = df['xi - Media'].apply(lambda x: x * x)
             df['(xi - Media)^2 * fi'] = df['(xi - Media)^2'] * df['fi']
             suma_varianza = sum(df['(xi - Media)^2 * fi'])
             varianza = suma_varianza / suma_fi
+
+            # Desviación estándar solo en decimal
             desviacion = math.sqrt(float(varianza))
             rango = max(df['xi']) - min(df['xi'])
 
+            # Mostrar tabla con fracciones
             st.subheader("Tabla de análisis:")
-            st.dataframe(df)
+            st.dataframe(df.astype(str))
 
-            st.markdown(f"**Media:** {float(media):.4f}")
-            st.markdown(f"**Rango:** {float(rango):.4f}")
-            st.markdown(f"**Varianza poblacional:** {float(varianza):.4f}")
+            # Mostrar resultados
+            st.markdown(f"**Media:** {media}")
+            st.markdown(f"**Rango:** {rango}")
+            st.markdown(f"**Varianza poblacional:** {varianza}")
             st.markdown(f"**Desviación estándar poblacional:** {desviacion:.8f}")
 
     except Exception as e:
         st.error(f"Error: {e}")
+
