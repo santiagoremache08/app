@@ -50,17 +50,17 @@ if st.button("Calcular"):
             desviacion = math.sqrt(float(varianza))
             rango = max(df['xi']) - min(df['xi'])
 
-            # Agregar fila de "Total" solo para la última columna
-            fila_totales = {col: '' for col in df.columns}
-            fila_totales['(xi - Media)^2 * fi'] = f"Total: {suma_varianza}"
-            df_final = pd.concat([df.astype(str), pd.DataFrame([fila_totales])], ignore_index=True)
-
-            # Mostrar tabla con fracciones y totales alineados
+            # Mostrar tabla
             st.subheader("Tabla de análisis:")
-            st.dataframe(df_final)
+            st.dataframe(df.astype(str))
 
-            # Mostrar resultados
-            st.markdown(f"**Media:** {media}")
+            # Mostrar métricas alineadas
+            col1, col2 = st.columns([2, 2])
+            with col1:
+                st.markdown(f"**Media:** {media}")
+            with col2:
+                st.markdown(f"**Total (xi - Media)^2 * fi:** {suma_varianza}")
+
             st.markdown(f"**Rango:** {rango}")
             st.markdown(f"**Varianza poblacional:** {varianza}")
             st.markdown(f"**Desviación estándar poblacional:** {desviacion:.8f}")
