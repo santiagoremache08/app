@@ -59,7 +59,7 @@ if st.button("Calcular"):
             with col1:
                 st.markdown(f"**Media:** {media}")
             with col2:
-                st.markdown(f"**Total (xi - Media)^2 * fi:** {suma_varianza}")
+                st.markdown(f"**Total:** {suma_varianza}")
 
             st.markdown(f"**Rango:** {rango}")
             st.markdown(f"**Varianza poblacional:** {varianza}")
